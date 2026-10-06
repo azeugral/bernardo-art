@@ -25,7 +25,7 @@ HTML, CSS e JS puros. Feito por [L R G Z](https://lrgz.com.br).
   - `tinta-agendar.mp4`: cabeçalho do agendamento, com a área do título livre.
 - **Para regravar** depois de mexer no shader: com o servidor local na 8781, rode
   `node tools/gravar_video.mjs <pasta> <tipo> <largura> <altura>` (abertura e final: 540 960; agendar: 540 540)
-  e depois `ffmpeg -framerate 30 -i <pasta>/%04d.png -c:v libx264 -preset slow -crf 26 -pix_fmt yuv420p -tune animation -movflags +faststart -an assets/video/<nome>.mp4`.
+  e depois `ffmpeg -framerate 60 -i <pasta>/%04d.png -c:v libx264 -preset slower -crf 22 -pix_fmt yuv420p -profile:v high -level 4.2 -tune animation -g 120 -movflags +faststart -an assets/video/<nome>.mp4` (gravação em 60 fps por padrão; subir o `?v=` do vídeo em `tinta.js`).
   O loop fecha sozinho (24 s), sem emenda visível.
 
 ## Envio do formulário (FormSubmit)

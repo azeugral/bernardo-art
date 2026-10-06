@@ -6,7 +6,7 @@ import { spawn } from "node:child_process";
 import fs from "node:fs";
 const pasta = process.argv[2] || "quadros";
 const tipo = process.argv[3] || "abertura";
-const W = +(process.argv[4] || 540), H = +(process.argv[5] || 960), DPR = 2, FPS = 30, SEG = 24;
+const W = +(process.argv[4] || 540), H = +(process.argv[5] || 960), DPR = 2, FPS = +(process.env.FPS || 60), SEG = 24;
 fs.mkdirSync(pasta, { recursive: true });
 const edge = "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe";
 const port = 9400 + Math.floor(Math.random() * 400);

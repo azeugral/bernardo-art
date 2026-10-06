@@ -218,7 +218,7 @@
     v.poster = "assets/video/" + nome + ".jpg";
     v.className = "tinta-video tinta-video--" + nome;
     var src = document.createElement("source");
-    src.src = "assets/video/" + nome + ".mp4"; src.type = "video/mp4";
+    src.src = "assets/video/" + nome + ".mp4?v=60"; src.type = "video/mp4";
     v.appendChild(src);
     cv.parentNode.replaceChild(v, cv);
     v.addEventListener("loadeddata", function () { v.classList.add("pronto"); });
