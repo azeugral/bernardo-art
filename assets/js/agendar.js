@@ -40,7 +40,7 @@
       '<label class="escolha"><input type="radio" name="Cidade e mês" value="' + esc(v) + '" required><span><small>' + esc(a.mes) + " " + a.ano + "</small><b>" + esc(a.local) + "</b></span></label>");
   });
   caixaQuando.insertAdjacentHTML("beforeend",
-    '<label class="escolha"><input type="radio" name="Cidade e mês" value="Outra data"><span><small>Lista de espera</small><b>Outra data</b></span></label>');
+    '<label class="escolha"><input type="radio" name="Cidade e mês" value="Outra data"><span><small>Outra cidade ou mês</small><b>Outra data</b></span></label>');
   caixaQuando.addEventListener("change", function () {
     var outro = $('input[name="Cidade e mês"]:checked').value === "Outra data";
     outroQuando.hidden = !outro;
@@ -50,8 +50,8 @@
   /* ---------- texto de ajuda muda com o tipo de projeto ---------- */
   var ajudaIdeia = $("[data-ajuda-ideia]");
   var ajudas = {
-    "Tem um significado": "Seja o mais detalhista possível e, se se sentir à vontade, conte um pouco da sua história: o motivo e o que essa tatuagem significa para você.",
-    "Sem significado, tema definido": "Descreva o tema com clareza. Por exemplo: abstrato livre, um rosto feminino, um animal. Quanto mais definido, melhor."
+    "Tem um significado": "Seja o mais detalhista possível e, caso se sinta à vontade, conte um pouco da sua história: o motivo e o significado dessa tatuagem para você.",
+    "Sem significado, tema definido": "Descreva um tema bem definido, por exemplo: abstrato livre, um rosto feminino, um animal."
   };
   $$('input[name="x-tipo"]').forEach(function (r) {
     r.addEventListener("change", function () { ajudaIdeia.textContent = ajudas[r.value]; });
@@ -80,8 +80,8 @@
     marca.style.width = Math.min(100, v / MAXR * 100) + "%";
     var palmos = v / 22.5;
     var txt = v + " cm ≈ " + (palmos < 0.5 ? "menos de meio palmo" : (Math.round(palmos * 2) / 2).toString().replace(".", ",") + (palmos >= 1.25 ? " palmos" : " palmo"));
-    if (v <= 40) txt += " · costuma dar para tatuar no mesmo dia";
-    else txt += " · projeto grande, pode pedir mais de um dia";
+    if (v <= 40) txt += " · projeto pequeno: podemos tatuar no mesmo dia";
+    else txt += " · projeto maior: podemos tatuar no dia seguinte";
     leitura.textContent = txt;
   }
   tamanho.addEventListener("input", regua);

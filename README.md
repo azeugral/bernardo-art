@@ -30,6 +30,8 @@ vai direto para o e-mail do cliente.
 
 - [ ] Ativação do FormSubmit (passo 1 acima) ou outro destino (planilha via Apps Script, se ele quiser manter a planilha do Forms).
 - [ ] Setembro/2026 no Rio aparecia aberto no Forms; já passou, então está como fechado.
+- [ ] Campos novos que não existiam no Forms: e-mail (obrigatório, para o FormSubmit entregar a resposta) e Instagram (opcional). Locais do corpo e dias da semana viraram opções clicáveis.
+- [ ] Limite de 3 imagens no envio (o Forms não tinha limite declarado).
 - [ ] Idade mínima: atende menores com autorização? (hoje o campo só pede a idade).
 - [ ] Locais do corpo sugeridos no formulário (lista em `agendar.html`).
 - [ ] Versão em inglês para os pedidos da Europa 2027.

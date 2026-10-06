@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
-<link rel="stylesheet" href="assets/css/estilo.css?v=10">
+<link rel="stylesheet" href="assets/css/estilo.css?v=14">
 <script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
@@ -30,7 +30,6 @@
     <nav aria-label="Principal">
       <ul class="menu" id="menu">
         <li><a href="trabalhos.html">Trabalhos</a></li>
-        <li><a href="#processo">Processo</a></li>
         <li><a href="#agenda">Agenda</a></li>
         <li><a href="#valores">Valores</a></li>
         <li><a class="menu__agendar" href="agendar.html">Agendar</a></li>
@@ -74,11 +73,11 @@
       <div class="cabeca" data-revela>
         <span class="rotulo">Trabalhos</span>
         <h2>Trabalhos recentes</h2>
-        <p>Cada peça nasce de uma conversa e é desenhada no dia, direto para o corpo de quem vai usar.</p>
+        <p>Somente trabalhos originais, criados a partir da ideia de cada pessoa.</p>
       </div>
       <div class="obras" data-obras="home"></div>
       <div class="obras-mais">
-        <p><span data-obras-total>95</span> trabalhos no arquivo completo, dos mais recentes aos mais antigos.</p>
+        <p><span data-obras-total></span> trabalhos no arquivo completo, dos mais recentes aos mais antigos.</p>
         <div class="obras-mais__links">
           <a class="botao" href="trabalhos.html">Ver todos <span class="seta" aria-hidden="true">→</span></a>
           <a class="botao botao--linha" href="https://www.instagram.com/bernardo_art/" target="_blank" rel="noopener">@bernardo_art</a>
@@ -89,59 +88,17 @@
 
   <section class="secao secao--escura" id="originais">
     <div class="wrap originais">
-      <div data-revela>
+      <img class="originais__foto" src="assets/img/bernardo-tatuando.webp" alt="Bernardo Lacerda tatuando" width="1080" height="1080" loading="lazy" decoding="async" data-revela>
+      <div class="originais__texto" data-revela>
         <span class="rotulo">Antes de pedir</span>
-        <h2 style="margin-top:18px">Só trabalhos originais</h2>
-        <figure class="retrato">
-          <img src="assets/img/bernardo-tatuando.webp" alt="Bernardo Lacerda tatuando um peito com traços abstratos" width="1080" height="1080" loading="lazy" decoding="async">
-          <figcaption>Bernardo Lacerda</figcaption>
-        </figure>
-      </div>
-      <div data-revela>
-        <p class="texto">Você traz a ideia e o que ela significa. O desenho fica comigo. Por isso o processo pede <strong>confiança total na criação</strong>: a gente se apega ao conceito, e a estética é decidida no dia, olhando para o seu corpo.</p>
-        <ul class="nao-faco">
-          <li><s>Cópia</s><span>nem dos meus trabalhos</span></li>
-          <li><s>Reforma</s><span>de tatuagem antiga</span></li>
-          <li><s>Retoque</s><span>de outros artistas</span></li>
-          <li><s>Cobertura</s><span>só se combinada antes</span></li>
-        </ul>
+        <h2>Só trabalhos originais</h2>
+        <p>No processo de criação é muito importante que você confie 100% no meu trabalho: você me traz a ideia e o conceito da tatuagem, e a criação e a parte estética ficam comigo.</p>
+        <p>Não faço cópias (principalmente dos meus próprios trabalhos), reformas, retoques de outras tatuagens nem coberturas, a não ser algo combinado previamente.</p>
       </div>
     </div>
   </section>
 
-  <section class="secao" id="processo">
-    <div class="wrap">
-      <div class="cabeca" data-revela>
-        <span class="rotulo">Processo</span>
-        <h2>Como é o dia</h2>
-        <p>Tudo acontece no mesmo encontro. Projetos grandes seguem em dias consecutivos, já reservados quando eu avalio o seu pedido.</p>
-      </div>
-      <ol class="etapas">
-        <li class="etapa" data-revela>
-          <div class="etapa__tempo">Cerca de 1 h</div>
-          <h3>Conversa</h3>
-          <p>Repassamos tudo o que você escreveu no pedido, separamos as ideias mais importantes e fechamos os pontos-chave do projeto.</p>
-        </li>
-        <li class="etapa" data-revela>
-          <div class="etapa__tempo">De 1 h a 3 h</div>
-          <h3>Desenho</h3>
-          <p>Com o conceito definido, eu me retiro e crio o seu desenho. É a parte mais demorada.</p>
-          <p class="nota">Leve um livro ou alguma coisa para passar o tempo.</p>
-        </li>
-        <li class="etapa" data-revela>
-          <div class="etapa__tempo">Mesmo dia ou dia seguinte</div>
-          <h3>Tatuagem</h3>
-          <p>Projetos de até 30 a 40 cm são tatuados no mesmo dia. Os maiores começam no dia seguinte, com calma e respeitando o tempo do projeto.</p>
-        </li>
-      </ol>
-      <div class="aviso-grande" data-revela>
-        <span class="rotulo">Projetos grandes</span>
-        <p>Se a tatuagem for muito grande, ou se o desenho levar mais tempo que o normal, tatuamos em um segundo dia. Eu já avalio isso pelas suas respostas e, quando for o caso, reservo dois ou mais dias seguidos.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="secao" id="agenda" style="padding-top:0">
+  <section class="secao" id="agenda">
     <div class="wrap agenda-grade">
       <div>
         <h2 data-revela>Agenda</h2>
@@ -157,29 +114,28 @@
       <div class="cabeca" data-revela>
         <span class="rotulo">Valores</span>
         <h2>Orçamento e sinal</h2>
-        <p>O valor sai depois que eu leio o seu pedido. Não há tabela por centímetro.</p>
+        <p>Valores fechados, avaliados por tamanho, complexidade e quantidade de sessões.</p>
       </div>
       <div class="valores" data-revela>
         <div class="valor valor--a">
-          <h3>Valor fechado</h3>
-          <p>Eu cobro um valor fechado, avaliado por tamanho, complexidade e número de sessões.</p>
-          <p>Um projeto grande pensado de uma vez, como um fechamento de braço, costuma ficar mais harmônico do que várias peças que se complementam. Por isso fechamentos têm desconto, e projetos maiores acabam saindo relativamente mais em conta.</p>
-          <p style="color:var(--grafite);font-size:.92rem;margin:0">Se no dia o tamanho ou o local mudarem, o valor é reajustado. Seja realista ao informar o tamanho.</p>
+          <h3>Fechamentos</h3>
+          <p>Quando um projeto grande, como um fechamento de braço, é pensado de uma vez só, as coisas costumam se encaixar melhor e o todo fica mais harmônico. Por isso há um desconto especial para fechamentos desenvolvidos de uma vez, e os projetos maiores acabam tendo valores relativamente mais em conta.</p>
+          <p style="color:var(--grafite);font-size:.92rem;margin:0">Se no dia combinado houver mudança de tamanho ou de local do corpo, o valor é reajustado. Por isso, seja realista ao informar o tamanho.</p>
         </div>
         <div class="valor valor--b">
           <h3>Pagamento</h3>
           <ul>
             <li><span>Dinheiro</span><span></span></li>
-            <li><span>PIX</span><span>transferência</span></li>
-            <li><span>Cartão de crédito</span><span>com juros da máquina</span></li>
+            <li><span>Transferência</span><span>PIX</span></li>
+            <li><span>Cartão de crédito</span><span>juros da máquina</span></li>
           </ul>
         </div>
         <div class="valor valor--c">
           <div class="sinal-numero">R$ 500<small>de sinal por dia de projeto</small></div>
           <div>
-            <p>O sinal é abatido do valor total no fim. Ele <strong>não é devolvido em nenhuma hipótese</strong>, porque os dias ficam inteiramente reservados para você.</p>
-            <p>Remarcações precisam de pelo menos 72 horas de aviso.</p>
-            <p style="margin:0">Nenhuma data é marcada sem o comprovante do sinal.</p>
+            <p>O sinal é pago antecipadamente e abatido do valor total acordado. Ele <strong>não é retornável em nenhuma hipótese</strong>, pois os dias ficam inteiramente reservados para você.</p>
+            <p>Remarcações precisam de aviso prévio de, no mínimo, 72 horas.</p>
+            <p style="margin:0">Nenhuma data é agendada sem o envio do comprovante do sinal.</p>
           </div>
         </div>
       </div>
@@ -189,11 +145,10 @@
   <section class="final" data-tinta-area aria-label="Pedir agendamento">
     <canvas data-tinta data-semente="3.7" aria-hidden="true"></canvas>
     <div class="wrap">
-      <div class="final__caixa" data-revela>
+      <div class="final__bloco" data-tinta-livre data-tinta-folga="28">
         <span class="rotulo">Pedido de agendamento</span>
         <h2>Conte a sua história</h2>
-        <p>Quanto mais detalhes, melhor. Se a tatuagem tiver um significado, me conte. Se não tiver, tudo bem: aí eu preciso de um tema bem definido.</p>
-        <p style="margin:0">O pedido leva uns dez minutos e fica salvo no seu navegador enquanto você preenche.</p>
+        <p>Seja o mais detalhista possível. Se a tatuagem tiver um significado, me conte; se não tiver, preciso de um tema bem definido.</p>
         <div class="final__acoes">
           <a class="botao" href="agendar.html">Começar o pedido <span class="seta" aria-hidden="true">→</span></a>
           <a href="mailto:bernardoart2019@gmail.com"><span class="sublinha">Dúvidas por e-mail</span></a>
@@ -222,7 +177,7 @@
         <ul>
           <li>Rio de Janeiro</li>
           <li>São Paulo</li>
-          <li>Europa, em temporadas</li>
+          <li>Europa (2027)</li>
         </ul>
       </div>
       <div>
@@ -249,9 +204,9 @@
   <button class="luz__btn luz__prox" type="button" data-luz-prox aria-label="Próxima foto">→</button>
 </dialog>
 
-<script src="assets/js/agenda.js?v=10"></script>
-<script src="assets/js/obras.js?v=10"></script>
-<script src="assets/js/site.js?v=10"></script>
-<script src="assets/js/tinta.js?v=10"></script>
+<script src="assets/js/agenda.js?v=14"></script>
+<script src="assets/js/obras.js?v=14"></script>
+<script src="assets/js/site.js?v=14"></script>
+<script src="assets/js/tinta.js?v=14"></script>
 </body>
 </html>
