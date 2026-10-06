@@ -8,9 +8,10 @@ HTML, CSS e JS puros. Feito por [L R G Z](https://lrgz.com.br).
 | O quê | Onde |
 |---|---|
 | Abrir ou fechar meses da agenda | `assets/js/agenda.js` (alimenta a home e o formulário) |
-| Fotos do portfólio | colocar em `../_ref/portfolio` e rodar `python tools/processar.py` |
+| Fotos do portfólio | todas em `../_ref/portfolio` (vão para `trabalhos.html`, mais recentes primeiro); as da home ficam listadas em `../_ref/portfolio/destaques.txt`. Depois rodar `python tools/processar.py` |
+| Fotos dele | `../_ref/ele` → `assets/img/bernardo-*.webp` |
 | Destino do formulário | `assets/js/agendar.js`, objeto `ENVIO` |
-| Textos | `index.html` e `agendar.html` |
+| Textos | `index.html`, `trabalhos.html` e `agendar.html` |
 | Cache | subir o `?v=` nos `<link>`/`<script>` dos HTML depois de mudar CSS/JS |
 
 ## Envio do formulário (FormSubmit)
@@ -28,7 +29,6 @@ vai direto para o e-mail do cliente.
 ## CONFIRMAR com o Bernardo
 
 - [ ] Ativação do FormSubmit (passo 1 acima) ou outro destino (planilha via Apps Script, se ele quiser manter a planilha do Forms).
-- [ ] Fotos do portfólio em alta (o site mostra 6 espaços reservados até lá).
 - [ ] Setembro/2026 no Rio aparecia aberto no Forms; já passou, então está como fechado.
 - [ ] Idade mínima: atende menores com autorização? (hoje o campo só pede a idade).
 - [ ] Locais do corpo sugeridos no formulário (lista em `agendar.html`).

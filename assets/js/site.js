@@ -57,20 +57,65 @@
     alvo.innerHTML = html;
   }
 
-  /* trabalhos */
+  /* trabalhos: data-obras="home" mostra os destaques; "todas" mostra o arquivo inteiro */
   var obras = document.querySelector("[data-obras]");
   if (obras) {
-    var lista = window.OBRAS || [];
+    var todas = window.OBRAS || [];
+    var lista = obras.dataset.obras === "home" && window.OBRAS_HOME
+      ? window.OBRAS_HOME.map(function (i) { return todas[i]; }).filter(Boolean)
+      : todas;
     var h = "";
     if (lista.length) {
       lista.forEach(function (o, i) {
-        h += '<figure class="obra" data-revela><img src="' + esc(o.src) + '" alt="' + esc(o.alt || "Tatuagem de Bernardo Lacerda") + '" width="' + (o.w || 1200) + '" height="' + (o.h || 1500) + '" loading="' + (i < 3 ? "eager" : "lazy") + '" decoding="async">' +
-          (o.legenda ? "<figcaption>" + esc(o.legenda) + "</figcaption>" : "") + "</figure>";
+        h += '<figure class="obra" data-revela><button type="button" class="obra__abrir" data-abrir="' + i + '" aria-label="Ampliar foto ' + (i + 1) + '">' +
+          '<img src="' + esc(o.mini || o.src) + '" alt="Tatuagem abstrata de Bernardo Lacerda" width="640" height="800" loading="' + (i < 3 ? "eager" : "lazy") + '" decoding="async"></button></figure>';
       });
     } else {
       for (var i = 1; i <= 6; i++) h += '<div class="obra obra--vaga" data-revela><span>Foto ' + (i < 10 ? "0" + i : i) + "</span></div>";
     }
     obras.innerHTML = h;
+
+    var total = document.querySelector("[data-obras-total]");
+    if (total) total.textContent = todas.length;
+
+    /* ampliar */
+    var dlg = document.querySelector("[data-luz]");
+    if (dlg && lista.length && typeof dlg.showModal === "function") {
+      var img = dlg.querySelector("img"), leg = dlg.querySelector("[data-luz-legenda]"), atual = 0;
+      var mostrar = function (i) {
+        atual = (i + lista.length) % lista.length;
+        var o = lista[atual];
+        img.src = o.src; img.width = o.w; img.height = o.h;
+        img.alt = "Tatuagem abstrata de Bernardo Lacerda";
+        leg.textContent = (atual + 1) + " / " + lista.length;
+        var prox = lista[(atual + 1) % lista.length];
+        if (prox) { var pre = new Image(); pre.src = prox.src; }
+      };
+      obras.addEventListener("click", function (e) {
+        var b = e.target.closest("[data-abrir]");
+        if (!b) return;
+        mostrar(+b.dataset.abrir);
+        dlg.showModal();
+        document.documentElement.style.overflow = "hidden";
+      });
+      dlg.addEventListener("close", function () { document.documentElement.style.overflow = ""; });
+      dlg.querySelector("[data-luz-fechar]").addEventListener("click", function () { dlg.close(); });
+      dlg.querySelector("[data-luz-ant]").addEventListener("click", function () { mostrar(atual - 1); });
+      dlg.querySelector("[data-luz-prox]").addEventListener("click", function () { mostrar(atual + 1); });
+      dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft") mostrar(atual - 1);
+        if (e.key === "ArrowRight") mostrar(atual + 1);
+      });
+      var x0 = null;
+      dlg.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+      dlg.addEventListener("touchend", function (e) {
+        if (x0 === null) return;
+        var dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 50) mostrar(atual + (dx < 0 ? 1 : -1));
+        x0 = null;
+      });
+    }
   }
 
   /* revelar ao rolar */
