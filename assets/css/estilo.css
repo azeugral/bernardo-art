@@ -664,10 +664,75 @@ fieldset.campo > legend { margin-bottom: 8px; }
 .alerta { border: 1px solid var(--erro); color: var(--erro); padding: 14px 16px; margin: 0 0 24px; font-size: .95rem; }
 .alerta[hidden] { display: none; }
 
+/* menu de etapas no celular */
+.etapas-mob { display: none; }
+@media (max-width: 960px) {
+  .etapas-mob {
+    display: block;
+    position: sticky; top: var(--topo-h); z-index: 20;
+    margin: 0 calc(-1 * var(--gutter)) 28px;
+    background: rgba(232, 228, 220, .96);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--linha);
+  }
+  .etapas-mob__atual {
+    all: unset; box-sizing: border-box; cursor: pointer; position: relative;
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px;
+    width: 100%; min-height: 58px; padding: 0 var(--gutter);
+  }
+  .etapas-mob__atual::after {
+    content: ""; position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%;
+    background: var(--tinta); transform-origin: 0 50%; transform: scaleX(var(--prog, .2));
+    transition: transform .6s var(--curva);
+  }
+  .etapas-mob__atual:focus-visible { outline: 2px solid var(--tinta); outline-offset: -4px; }
+  .etapas-mob__n { font: 500 .72rem/1 var(--f-mono); letter-spacing: .1em; color: var(--grafite); }
+  .etapas-mob__nome { font: 400 1.3rem/1 var(--f-titulo); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .etapas-mob__abrir {
+    display: inline-flex; align-items: center; gap: 9px;
+    font: 500 .68rem/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase;
+    border: 1px solid var(--tinta); padding: 10px 11px 9px;
+    transition: background-color var(--rapido) var(--curva), color var(--rapido) var(--curva);
+  }
+  .etapas-mob__abrir::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform var(--rapido) var(--curva); }
+  .etapas-mob.aberto .etapas-mob__abrir { background: var(--tinta); color: var(--papel); }
+  .etapas-mob.aberto .etapas-mob__abrir::after { transform: translateY(2px) rotate(-135deg); }
+  .etapas-mob__lista { list-style: none; margin: 0; padding: 4px var(--gutter) 8px; }
+  .etapas-mob__lista li { border-bottom: 1px solid var(--linha); }
+  .etapas-mob__lista li:last-child { border-bottom: 0; }
+  .etapas-mob__lista button {
+    all: unset; box-sizing: border-box; cursor: pointer; width: 100%;
+    display: grid; grid-template-columns: 2.6em 1fr auto; align-items: center;
+    min-height: 50px;
+    font: 500 .78rem/1.2 var(--f-mono); letter-spacing: .1em; text-transform: uppercase;
+    color: rgba(13,13,12,.45);
+  }
+  .etapas-mob__lista li.feito button { color: var(--grafite); }
+  .etapas-mob__lista li.feito button::after { content: "\2713"; }
+  .etapas-mob__lista li[aria-current="step"] button { color: var(--tinta); }
+  .etapas-mob__lista li[aria-current="step"] button::after { content: "atual"; font-size: .62rem; color: var(--grafite); }
+  .etapas-mob__lista button:focus-visible { outline: 2px solid var(--tinta); outline-offset: 2px; }
+  .etapas-mob + .progresso { display: none; }
+
+  /* botões ao alcance do polegar */
+  .navegar {
+    position: sticky; bottom: 0; z-index: 15;
+    margin: 36px calc(-1 * var(--gutter)) 0;
+    padding: 12px var(--gutter) calc(12px + env(safe-area-inset-bottom));
+    background: rgba(232, 228, 220, .96);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border-top: 1px solid var(--linha);
+  }
+  .navegar .rascunho { display: none; }
+  .navegar__botoes { width: 100%; }
+  .navegar__botoes .botao { flex: 1; min-height: 50px; padding: 0 14px; }
+  .agendar__form { padding-bottom: 0; }
+}
+
 @media (max-width: 960px) {
   .agendar { grid-template-columns: 1fr; }
   .agendar__lado { border-right: 0; border-bottom: 1px solid var(--linha); }
-  .agendar__lado-in { position: relative; top: 0; height: auto; min-height: 0; padding-top: 48px; padding-bottom: 48px; gap: 28px; }
+  .agendar__lado-in { position: relative; top: 0; height: auto; min-height: 46svh; justify-content: flex-end; padding-top: 48px; padding-bottom: 36px; gap: 28px; }
   .passos { display: none; }
   .agendar__form { padding-top: 32px; }
 }

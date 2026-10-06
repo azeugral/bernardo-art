@@ -40,7 +40,10 @@
     "      liv=max(liv,1.-smoothstep(-zf*.4,zf*2.4,sd));",
     "    }",
     "  }",
-    "  vec2 p=((fc-desvio)-.5*r)/mn*1.05+vec2(s*7.13,s*3.71);",
+    "  vec2 c0=((fc-desvio)-.5*r)/mn;",
+    /* tela em pé: gira o desenho para manter a composição da tela deitada */
+    "  if(r.y>r.x*1.05) c0=vec2(c0.y,-c0.x);",
+    "  vec2 p=c0*1.05+vec2(s*7.13,s*3.71);",
     "  float T=t*.035;",
     "  vec2 a=vec2(fb(p+vec2(0.,T)),fb(p+vec2(5.2,1.3)-T*.7));",
     "  vec2 b=vec2(fb(p+2.2*a+vec2(1.7,9.2)+T*.6),fb(p+2.2*a+vec2(8.3,2.8)-T*.4));",
@@ -105,8 +108,12 @@
 
     var w = 0, hgt = 0, visivel = true, rodando = false, ultimo = 0, tempo = 12;
 
+    /* resolução: telas de toque começam em 1x; se o aparelho não sustentar ~45 fps, baixa sozinho */
+    var toque = window.matchMedia("(pointer: coarse)").matches;
+    var escala = toque ? 1 : 1.5, amostras = [], ajustes = 0;
+
     function medir() {
-      var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      var dpr = Math.min(window.devicePixelRatio || 1, escala);
       var r = cv.getBoundingClientRect();
       w = Math.max(1, Math.round(r.width * dpr));
       hgt = Math.max(1, Math.round(r.height * dpr));
@@ -119,6 +126,8 @@
       livres.forEach(function (el, i) {
         var lr = el.getBoundingClientRect();
         if (!lr.width) return;
+        /* data-tinta-livre-min: largura de tela a partir da qual a área livre vale */
+        if (el.dataset.tintaLivreMin && window.innerWidth < +el.dataset.tintaLivreMin) return;
         var folga = parseFloat(el.dataset.tintaFolga || "-4");
         zonas[i * 4] = (lr.left - r.left + lr.width / 2) * k;
         zonas[i * 4 + 1] = (r.bottom - lr.bottom + lr.height / 2) * k;
@@ -139,8 +148,17 @@
 
     function quadro(agora) {
       if (!visivel || reduz.matches || document.hidden) { rodando = false; return; }
-      var dt = Math.min(0.05, (agora - (ultimo || agora)) / 1000);
+      var bruto = ultimo ? agora - ultimo : 16.7;
+      var dt = Math.min(0.05, bruto / 1000);
       ultimo = agora;
+      if (ajustes < 3) {
+        amostras.push(bruto);
+        if (amostras.length === 40) {
+          amostras.sort(function (a, b) { return a - b; });
+          if (amostras[20] > 22 && escala > 0.5) { escala = Math.max(0.5, escala * 0.75); ajustes++; medir(); }
+          amostras = [];
+        }
+      }
       tempo += dt;
       desenhar();
       requestAnimationFrame(quadro);

@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
-<link rel="stylesheet" href="assets/css/estilo.css?v=18">
+<link rel="stylesheet" href="assets/css/estilo.css?v=21">
 <script>document.documentElement.classList.add("js")</script>
 </head>
 <body class="pagina-agendar">
@@ -66,6 +66,20 @@
   </aside>
 
   <div class="agendar__form">
+    <nav class="etapas-mob" aria-label="Etapas do pedido" data-etapas-mob>
+      <button type="button" class="etapas-mob__atual" aria-expanded="false" aria-controls="etapas-mob-lista" data-etapas-mob-btn>
+        <span class="etapas-mob__n" data-etapa-n>01 / 05</span>
+        <span class="etapas-mob__nome" data-etapa-nome>Você</span>
+        <span class="etapas-mob__abrir">Etapas</span>
+      </button>
+      <ol class="etapas-mob__lista" id="etapas-mob-lista" data-passos-mob hidden>
+        <li><button type="button" data-ir="0"><span>01</span>Você</button></li>
+        <li><button type="button" data-ir="1"><span>02</span>O projeto</button></li>
+        <li><button type="button" data-ir="2"><span>03</span>Quando</button></li>
+        <li><button type="button" data-ir="3"><span>04</span>Valores e sinal</button></li>
+        <li><button type="button" data-ir="4"><span>05</span>Revisar e enviar</button></li>
+      </ol>
+    </nav>
     <div class="progresso" aria-hidden="true"><i data-progresso></i></div>
 
     <form id="pedido" data-pedido method="POST" action="https://formsubmit.co/bernardoart2019@gmail.com" enctype="multipart/form-data" novalidate>
@@ -285,9 +299,9 @@
   </div>
 </footer>
 
-<script src="assets/js/agenda.js?v=18"></script>
-<script src="assets/js/site.js?v=18"></script>
-<script src="assets/js/agendar.js?v=18"></script>
-<script src="assets/js/tinta.js?v=18"></script>
+<script src="assets/js/agenda.js?v=21"></script>
+<script src="assets/js/site.js?v=21"></script>
+<script src="assets/js/agendar.js?v=21"></script>
+<script src="assets/js/tinta.js?v=21"></script>
 </body>
 </html>

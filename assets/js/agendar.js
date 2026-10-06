@@ -204,6 +204,36 @@
   function mostrarAlerta(t) { alerta.textContent = t; alerta.hidden = false; }
   function esconderAlerta() { alerta.hidden = true; }
 
+  /* ---------- menu de etapas no celular ---------- */
+  var mob = document.querySelector("[data-etapas-mob]");
+  var mobBtn = mob && mob.querySelector("[data-etapas-mob-btn]");
+  var mobLista = mob && mob.querySelector("[data-passos-mob]");
+  var mobItens = mob ? Array.prototype.slice.call(mobLista.querySelectorAll("li")) : [];
+  var nomes = passos.map(function (p) { return p.querySelector("button").textContent; });
+  function abrirMob(abre) {
+    if (!mob) return;
+    mobLista.hidden = !abre;
+    mobBtn.setAttribute("aria-expanded", String(abre));
+    mob.classList.toggle("aberto", abre);
+  }
+  function atualizarMob() {
+    if (!mob) return;
+    var dois = function (n) { return (n < 10 ? "0" : "") + n; };
+    mob.querySelector("[data-etapa-n]").textContent = dois(atual + 1) + " / " + dois(etapas.length);
+    mob.querySelector("[data-etapa-nome]").textContent = nomes[atual];
+    mob.style.setProperty("--prog", (atual + 1) / etapas.length);
+    mobItens.forEach(function (li, k) {
+      if (k === atual) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
+      li.classList.toggle("feito", k !== atual && k <= maxVisto);
+    });
+    abrirMob(false);
+  }
+  if (mob) {
+    mobBtn.addEventListener("click", function () { abrirMob(mobLista.hidden); });
+    document.addEventListener("click", function (e) { if (!mob.contains(e.target)) abrirMob(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") abrirMob(false); });
+  }
+
   /* ---------- navegação entre etapas ---------- */
   function ir(i, foco) {
     atual = Math.max(0, Math.min(etapas.length - 1, i));
@@ -220,11 +250,13 @@
     btnAvancar.hidden = atual === etapas.length - 1;
     btnEnviar.hidden = atual !== etapas.length - 1;
     barra.style.transform = "scaleX(" + ((atual + 1) / etapas.length) + ")";
+    atualizarMob();
     if (atual === etapas.length - 1) montarRevisao();
     esconderAlerta();
     if (foco !== false) {
       var topo = document.querySelector(".agendar__form");
-      var y = topo.getBoundingClientRect().top + window.scrollY - 70;
+      var fixo = (document.querySelector("[data-topo]") || {}).offsetHeight || 0;
+      var y = topo.getBoundingClientRect().top + window.scrollY - fixo - 8;
       if (window.scrollY > y) window.scrollTo({ top: y, behavior: "auto" });
       etapas[atual].querySelector("h2").setAttribute("tabindex", "-1");
       etapas[atual].querySelector("h2").focus({ preventScroll: true });
