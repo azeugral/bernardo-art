@@ -190,12 +190,13 @@ p { margin: 0 0 1em; }
   isolation: isolate;
   overflow: hidden;
 }
-.abertura canvas {
+.abertura canvas, .abertura video {
   position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1;
   opacity: 0; transition: opacity 1.4s var(--curva);
 }
-.abertura canvas.pronto { opacity: 1; }
+.abertura canvas.pronto, .abertura video.pronto { opacity: 1; }
 .abertura canvas.sem-gl, .abertura .tinta-fallback { opacity: 1; }
+.tinta-video { object-fit: cover; background: var(--papel); }
 .tinta-fallback {
   position: absolute; inset: 0; z-index: -2;
   background: var(--papel) url("../img/marmore.svg") center / cover no-repeat;
@@ -424,8 +425,8 @@ a.agenda-linha .estado { border: 1px solid currentColor; padding: 7px 9px 6px; }
 /* ---------- Fechamento ---------- */
 
 .final { position: relative; overflow: hidden; isolation: isolate; min-height: 100svh; display: grid; align-items: center; padding: clamp(96px, 12vw, 160px) 0; }
-.final canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: 0; transition: opacity 1.4s var(--curva); }
-.final canvas.pronto { opacity: 1; }
+.final canvas, .final video { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: 0; transition: opacity 1.4s var(--curva); }
+.final canvas.pronto, .final video.pronto { opacity: 1; }
 .final__bloco { display: inline-block; max-width: 620px; }
 .final__bloco h2 { font-size: clamp(2.4rem, 6vw, 4.8rem); margin: 14px 0 18px; }
 .final__bloco p { color: #2b2925; max-width: 52ch; }
@@ -488,8 +489,8 @@ a.agenda-linha .estado { border: 1px solid currentColor; padding: 7px 9px 6px; }
   height: calc(100svh - var(--topo-h));
   display: flex; flex-direction: column; justify-content: space-between; gap: 40px;
 }
-.agendar__lado canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: 0; transition: opacity 1.4s var(--curva); }
-.agendar__lado canvas.pronto { opacity: 1; }
+.agendar__lado canvas, .agendar__lado video { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: 0; transition: opacity 1.4s var(--curva); }
+.agendar__lado canvas.pronto, .agendar__lado video.pronto { opacity: 1; }
 .agendar__titulo { align-self: flex-start; }
 .agendar__titulo .rotulo { display: block; margin-bottom: 14px; }
 .agendar__lado h1 { font-size: clamp(2.6rem, 5vw, 4.6rem); text-transform: uppercase; line-height: .9; }
@@ -744,8 +745,12 @@ fieldset.campo > legend { margin-bottom: 8px; }
 /* ---------- Páginas simples ---------- */
 
 .simples { min-height: 100svh; display: grid; place-items: center; position: relative; isolation: isolate; overflow: hidden; padding: calc(var(--topo-h) + 32px) 0 48px; }
-.simples canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: 0; transition: opacity 1.4s var(--curva); }
-.simples canvas.pronto { opacity: 1; }
+.simples canvas, .simples video { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: 0; transition: opacity 1.4s var(--curva); }
+.simples canvas.pronto, .simples video.pronto { opacity: 1; }
 .simples .final__caixa { max-width: 620px; }
 .simples ol { padding-left: 1.2em; margin: 0 0 1em; }
 .simples ol li { margin-bottom: 8px; }
+
+/* celular: vídeos gravados com a área do texto já livre */
+.tinta-video--tinta-agendar { object-position: left bottom; }
+.tinta-video--tinta-final { object-position: center; }

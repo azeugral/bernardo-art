@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#e8e4dc}canvas{position:fixed;inset:0;width:100%;height:100%}.livre{position:fixed}</style>
+</head><body>
+<!-- Gera os vídeos do celular: tools/gravar_video.mjs abre esta página e captura quadro a quadro.
+     ?tipo=abertura  tinta livre (o nome inverte por cima)
+     ?tipo=final     faixa livre no meio, para "Conte a sua história", obrigado e 404
+     ?tipo=agendar   área livre embaixo à esquerda, onde fica o título do agendamento -->
+<script>
+  var tipo = new URLSearchParams(location.search).get("tipo") || "abertura";
+  var zonas = { final: "left:0;width:100%;top:29%;height:46%", agendar: "left:0;width:84%;top:52%;height:48%" };
+  if (zonas[tipo]) document.write('<div class="livre" data-tinta-livre data-tinta-folga="0" style="' + zonas[tipo] + '"></div>');
+  var sem = { abertura: "0", final: "3.7", agendar: "8.2" }[tipo] || "0";
+  document.write('<canvas data-tinta data-semente="' + sem + '" data-tinta-gravar="24"></canvas>');
+</script>
+<script src="../assets/js/tinta.js"></script>
+</body></html>

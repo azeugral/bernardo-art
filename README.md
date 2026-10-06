@@ -12,7 +12,21 @@ HTML, CSS e JS puros. Feito por [L R G Z](https://lrgz.com.br).
 | Fotos dele | `../_ref/ele` → `assets/img/bernardo-*.webp` |
 | Destino do formulário | `assets/js/agendar.js`, objeto `ENVIO` |
 | Textos | `index.html`, `trabalhos.html` e `agendar.html` |
+| Vídeos do celular | `assets/video/` (ver abaixo) |
 | Cache | subir o `?v=` nos `<link>`/`<script>` dos HTML depois de mudar CSS/JS |
+
+## Animação de fundo
+
+- **PC e tablet:** WebGL ao vivo (`assets/js/tinta.js`).
+- **Celular** (tela de toque com lado menor que 600 px): vídeos em loop em `assets/video/`, porque GPUs de
+  celular (principalmente Android) não têm precisão para o shader e a arte saía serrilhada.
+  - `tinta.mp4`: abertura (o nome inverte por cima).
+  - `tinta-final.mp4`: "Conte a sua história", obrigado e 404, com a faixa do meio livre.
+  - `tinta-agendar.mp4`: cabeçalho do agendamento, com a área do título livre.
+- **Para regravar** depois de mexer no shader: com o servidor local na 8781, rode
+  `node tools/gravar_video.mjs <pasta> <tipo> <largura> <altura>` (abertura e final: 540 960; agendar: 540 540)
+  e depois `ffmpeg -framerate 30 -i <pasta>/%04d.png -c:v libx264 -preset slow -crf 26 -pix_fmt yuv420p -tune animation -movflags +faststart -an assets/video/<nome>.mp4`.
+  O loop fecha sozinho (24 s), sem emenda visível.
 
 ## Envio do formulário (FormSubmit)
 
