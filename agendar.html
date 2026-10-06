@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agendar · Bernardo Lacerda</title>
+<meta name="description" content="Pedido de agendamento de tatuagem com Bernardo Lacerda: conte a sua ideia, o local, o tamanho e quando você pode.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#e8e4dc">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Agendar · Bernardo Lacerda">
+<meta property="og:description" content="Pedido de agendamento: ideia, local, tamanho e data.">
+<meta property="og:image" content="https://azeugral.github.io/bernardo-art/assets/img/og.jpg">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<link rel="stylesheet" href="assets/css/estilo.css?v=5">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body class="pagina-agendar">
+<a class="pular" href="#pedido">Pular para o formulário</a>
+
+<header class="topo topo--fixo" data-topo>
+  <div class="wrap topo__in">
+    <a class="marca" href="./" aria-label="Bernardo Art, início"><b>Bernardo Art</b><small>Abstract tattoos</small></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-menu-btn>Menu</button>
+    <nav aria-label="Principal">
+      <ul class="menu" id="menu">
+        <li><a href="./#trabalhos">Trabalhos</a></li>
+        <li><a href="./#processo">Processo</a></li>
+        <li><a href="./#agenda">Agenda</a></li>
+        <li><a href="./#valores">Valores</a></li>
+        <li><a class="menu__agendar" href="agendar.html" aria-current="page">Agendar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="agendar">
+  <aside class="agendar__lado" data-tinta-area>
+    <canvas data-tinta data-semente="8.2" aria-hidden="true"></canvas>
+    <div class="agendar__lado-in">
+      <div>
+        <span class="rotulo">Pedido de agendamento</span><br>
+        <h1>Conte a sua história</h1>
+      </div>
+      <ol class="passos" data-passos>
+        <li aria-current="step"><span class="n">01</span><button type="button" data-ir="0">Você</button></li>
+        <li><span class="n">02</span><button type="button" data-ir="1">O projeto</button></li>
+        <li><span class="n">03</span><button type="button" data-ir="2">Quando</button></li>
+        <li><span class="n">04</span><button type="button" data-ir="3">Valores e sinal</button></li>
+        <li><span class="n">05</span><button type="button" data-ir="4">Revisar e enviar</button></li>
+      </ol>
+    </div>
+  </aside>
+
+  <div class="agendar__form">
+    <div class="progresso" aria-hidden="true"><i data-progresso></i></div>
+
+    <form id="pedido" data-pedido method="POST" action="https://formsubmit.co/bernardoart2019@gmail.com" enctype="multipart/form-data" novalidate>
+      <input type="hidden" name="_subject" value="Pedido de agendamento">
+      <input type="hidden" name="_next" value="">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input type="hidden" name="Local do corpo" data-composto="local">
+      <input type="hidden" name="Disponibilidade" data-composto="dias">
+      <input type="hidden" name="Tipo de projeto" data-composto="tipo">
+      <div data-anexos hidden></div>
+
+      <!-- 1 · Você -->
+      <fieldset class="etapa-form" data-etapa>
+        <legend class="rotulo">01 de 05</legend>
+        <h2>Sobre você</h2>
+        <p class="intro">Para organizar a nossa conversa, preciso de alguns dados. Eu respondo pelo contato que você deixar aqui.</p>
+        <div class="campos">
+          <div class="campo campo--cheio">
+            <label for="nome">Nome completo</label>
+            <input type="text" id="nome" name="Nome completo" autocomplete="name" required>
+            <p class="msg-erro">Escreva o seu nome completo.</p>
+          </div>
+          <div class="campo">
+            <label for="idade">Idade</label>
+            <input type="number" id="idade" name="Idade" inputmode="numeric" min="1" max="120" required>
+            <p class="msg-erro">Informe a sua idade.</p>
+          </div>
+          <div class="campo">
+            <label for="cidade">Estado e cidade onde mora</label>
+            <input type="text" id="cidade" name="Estado e cidade" autocomplete="address-level2" placeholder="RJ, Niterói" required>
+            <p class="msg-erro">Informe onde você mora.</p>
+          </div>
+          <div class="campo">
+            <label for="telefone">Telefone com DDD</label>
+            <input type="tel" id="telefone" name="Telefone" autocomplete="tel" placeholder="(21) 99999-9999" required>
+            <p class="ajuda">Fora do Brasil, inclua o código do país.</p>
+            <p class="msg-erro">Informe um telefone com DDD.</p>
+          </div>
+          <div class="campo">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+            <p class="msg-erro">Confira o seu e-mail.</p>
+          </div>
+          <div class="campo campo--cheio">
+            <label for="insta">Instagram <span class="opc">(opcional)</span></label>
+            <input type="text" id="insta" name="Instagram" autocomplete="off" placeholder="@seuperfil">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 2 · Projeto -->
+      <fieldset class="etapa-form" data-etapa hidden>
+        <legend class="rotulo">02 de 05</legend>
+        <h2>O projeto</h2>
+        <p class="intro">Eu gosto de me envolver ao máximo no projeto de cada pessoa. O que importa aqui é a ideia, não a referência pronta.</p>
+        <div class="campos">
+          <fieldset class="campo campo--cheio" data-grupo="tipo">
+            <legend>A tatuagem tem um significado para você?</legend>
+            <div class="escolhas escolhas--2">
+              <label class="escolha"><input type="radio" name="x-tipo" value="Tem um significado" required><span><b>Tem uma história</b><em>Me conte o motivo e o que ela representa.</em></span></label>
+              <label class="escolha"><input type="radio" name="x-tipo" value="Sem significado, tema definido"><span><b>Tema livre</b><em>Sem problema, mas o processo é outro: preciso de um tema bem definido.</em></span></label>
+            </div>
+            <p class="msg-erro">Escolha uma das opções.</p>
+          </fieldset>
+
+          <div class="campo campo--cheio">
+            <label for="ideia">Ideia e conceito</label>
+            <p class="ajuda" data-ajuda-ideia>Seja o mais detalhista possível e, se se sentir à vontade, conte um pouco da sua história.</p>
+            <textarea id="ideia" name="Ideia e conceito" required minlength="30"></textarea>
+            <span class="contador" data-contador>0 caracteres</span>
+            <p class="msg-erro">Conte um pouco mais sobre a ideia (pelo menos algumas linhas).</p>
+          </div>
+
+          <fieldset class="campo campo--cheio" data-grupo="local">
+            <legend>Local do corpo</legend>
+            <p class="ajuda">Por enquanto basta dizer onde. Se eu tiver alguma dúvida, peço fotos do local depois.</p>
+            <div class="fichas">
+              <label class="ficha"><input type="checkbox" value="Antebraço"><span>Antebraço</span></label>
+              <label class="ficha"><input type="checkbox" value="Braço"><span>Braço</span></label>
+              <label class="ficha"><input type="checkbox" value="Fechamento de braço"><span>Fechamento de braço</span></label>
+              <label class="ficha"><input type="checkbox" value="Ombro"><span>Ombro</span></label>
+              <label class="ficha"><input type="checkbox" value="Peito"><span>Peito</span></label>
+              <label class="ficha"><input type="checkbox" value="Costas"><span>Costas</span></label>
+              <label class="ficha"><input type="checkbox" value="Costela"><span>Costela</span></label>
+              <label class="ficha"><input type="checkbox" value="Coxa"><span>Coxa</span></label>
+              <label class="ficha"><input type="checkbox" value="Perna"><span>Perna</span></label>
+              <label class="ficha"><input type="checkbox" value="Fechamento de perna"><span>Fechamento de perna</span></label>
+              <label class="ficha"><input type="checkbox" value="Pé"><span>Pé</span></label>
+            </div>
+            <input type="text" id="local-obs" name="Local (detalhe)" placeholder="Outro local ou detalhe: lado de dentro do antebraço esquerdo…" style="margin-top:10px" aria-label="Detalhe do local">
+            <p class="msg-erro">Marque ou escreva onde você quer tatuar.</p>
+          </fieldset>
+
+          <div class="campo campo--cheio">
+            <label for="tamanho">Tamanho aproximado em centímetros</label>
+            <p class="ajuda">Um palmo adulto tem em média 20 a 25 cm. Seja realista: se o tamanho mudar no dia, o valor muda junto.</p>
+            <div style="display:flex;align-items:end;gap:12px;max-width:260px">
+              <input type="number" id="tamanho" name="Tamanho (cm)" inputmode="numeric" min="1" max="250" required style="flex:1">
+              <span class="rotulo" style="padding-bottom:12px">cm</span>
+            </div>
+            <div class="regua" aria-hidden="true">
+              <div class="regua__trilho" data-regua><span class="regua__marca" data-regua-marca></span></div>
+              <div class="regua__leitura" data-regua-leitura>Digite um tamanho</div>
+            </div>
+            <p class="msg-erro">Informe um tamanho aproximado.</p>
+          </div>
+
+          <div class="campo campo--cheio">
+            <span class="campo__titulo">Referências ou fotos do local <span class="opc">(opcional, até 3 imagens)</span></span>
+            <div class="fotos" data-fotos>
+              <div class="fotos__linha">
+                <p>Imagens que ajudam a explicar a ideia, ou fotos da região do corpo.</p>
+                <label class="botao botao--linha" for="arquivos">Escolher imagens</label>
+                <input class="input-arquivo" type="file" id="arquivos" accept="image/*" multiple>
+              </div>
+              <div class="fotos__lista" data-fotos-lista></div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 3 · Quando -->
+      <fieldset class="etapa-form" data-etapa hidden>
+        <legend class="rotulo">03 de 05</legend>
+        <h2>Quando</h2>
+        <p class="intro">Eu atendo no Rio de Janeiro e em São Paulo, e passo temporadas na Europa. Escolha a cidade e o mês em que você gostaria de tatuar.</p>
+        <div class="campos">
+          <fieldset class="campo campo--cheio" data-grupo="quando">
+            <legend>Cidade e mês</legend>
+            <div class="escolhas" data-quando></div>
+            <input type="text" id="quando-outro" name="Outra data" placeholder="Qual cidade e mês?" style="margin-top:10px" hidden aria-label="Outra cidade e mês">
+            <p class="msg-erro">Escolha uma cidade e um mês.</p>
+          </fieldset>
+
+          <fieldset class="campo campo--cheio" data-grupo="dias">
+            <legend>Dias da semana em que você pode passar comigo</legend>
+            <p class="ajuda">Normalmente das 14h às 20h, mas o horário pode mudar de acordo com a sua disponibilidade.</p>
+            <div class="fichas">
+              <label class="ficha"><input type="checkbox" value="Segunda"><span>Seg</span></label>
+              <label class="ficha"><input type="checkbox" value="Terça"><span>Ter</span></label>
+              <label class="ficha"><input type="checkbox" value="Quarta"><span>Qua</span></label>
+              <label class="ficha"><input type="checkbox" value="Quinta"><span>Qui</span></label>
+              <label class="ficha"><input type="checkbox" value="Sexta"><span>Sex</span></label>
+              <label class="ficha"><input type="checkbox" value="Sábado"><span>Sáb</span></label>
+              <label class="ficha"><input type="checkbox" value="Qualquer dia"><span>Qualquer dia</span></label>
+            </div>
+            <input type="text" id="dias-obs" name="Horários (observação)" placeholder="Algum horário ou data que não dá? (opcional)" style="margin-top:10px" aria-label="Observação sobre horários">
+            <p class="msg-erro">Marque pelo menos um dia.</p>
+          </fieldset>
+        </div>
+      </fieldset>
+
+      <!-- 4 · Valores -->
+      <fieldset class="etapa-form" data-etapa hidden>
+        <legend class="rotulo">04 de 05</legend>
+        <h2>Valores e sinal</h2>
+        <p class="intro">O valor é fechado e sai depois que eu ler o seu pedido, avaliado por tamanho, complexidade e número de sessões. Fechamentos pensados de uma vez têm desconto.</p>
+        <div class="quadro-valores">
+          <div>
+            <span class="rotulo">Sinal</span>
+            <div class="sinal-numero" style="margin-top:10px">R$ 500</div>
+            <p style="margin:10px 0 0;font-size:.95rem">por dia de projeto, abatido do valor total no fim.</p>
+          </div>
+          <div>
+            <span class="rotulo">Pagamento</span>
+            <ul>
+              <li>Dinheiro</li>
+              <li>PIX</li>
+              <li>Cartão de crédito, com juros da máquina</li>
+            </ul>
+          </div>
+        </div>
+        <div data-grupo="confirmacoes">
+          <label class="confirma"><input type="checkbox" name="Ciente: só originais" value="Sim" required><span>Entendi que o Bernardo faz <strong>só trabalhos originais</strong>: sem cópia, reforma, retoque de outras tatuagens ou cobertura (salvo combinado antes), e que a criação do desenho fica com ele.</span></label>
+          <label class="confirma"><input type="checkbox" name="Ciente: sinal" value="Sim" required><span>Entendi que o <strong>sinal de R$ 500 por dia não é devolvido</strong> em nenhuma hipótese, que remarcações pedem 72 horas de aviso e que nenhuma data é marcada sem o comprovante.</span></label>
+          <label class="confirma"><input type="checkbox" name="Ciente: reajuste" value="Sim" required><span>Entendi que, se o tamanho ou o local mudarem no dia, o valor será reajustado.</span></label>
+        </div>
+      </fieldset>
+
+      <!-- 5 · Revisão -->
+      <fieldset class="etapa-form" data-etapa hidden>
+        <legend class="rotulo">05 de 05</legend>
+        <h2>Revisar e enviar</h2>
+        <p class="intro">Confira se está tudo certo. Depois de enviar, eu leio com calma e respondo com o valor e as datas.</p>
+        <dl class="revisao" data-revisao></dl>
+        <div class="campos">
+          <div class="campo campo--cheio">
+            <label for="duvidas">Dúvidas finais <span class="opc">(opcional)</span></label>
+            <textarea id="duvidas" name="Dúvidas finais" style="min-height:120px" placeholder="Se ficou alguma dúvida, pergunte aqui."></textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="alerta" role="alert" data-alerta hidden></div>
+
+      <div class="navegar">
+        <span class="rascunho" data-rascunho aria-live="polite"></span>
+        <div class="navegar__botoes">
+          <button class="botao botao--linha" type="button" data-voltar hidden>Voltar</button>
+          <button class="botao" type="button" data-avancar>Continuar <span class="seta" aria-hidden="true">→</span></button>
+          <button class="botao" type="submit" data-enviar hidden>Enviar pedido <span class="seta" aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
+
+<footer class="rodape">
+  <div class="wrap">
+    <div class="rodape__base" style="margin-top:0;border-top:0;padding-top:0">
+      <span>Dúvidas: <a href="mailto:bernardoart2019@gmail.com">bernardoart2019@gmail.com</a> · <a href="https://www.instagram.com/bernardo_art/" target="_blank" rel="noopener">@bernardo_art</a></span>
+      <span>Site por <a href="https://lrgz.com.br" target="_blank" rel="noopener">L R G Z</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/agenda.js?v=5"></script>
+<script src="assets/js/site.js?v=5"></script>
+<script src="assets/js/agendar.js?v=5"></script>
+<script src="assets/js/tinta.js?v=5"></script>
+</body>
+</html>
