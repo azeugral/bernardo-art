@@ -224,7 +224,13 @@ p { margin: 0 0 1em; }
   opacity: 0; transition: opacity 1.4s var(--curva);
 }
 .abertura canvas.pronto, .abertura video.pronto { opacity: 1; }
-.abertura canvas.sem-gl, .abertura .tinta-fallback { opacity: 1; }
+.abertura canvas.sem-gl { opacity: 1; }
+.tinta-fallback { display: none; }
+.abertura canvas.sem-gl { background: var(--papel) url("../img/marmore.svg") center / cover no-repeat; }
+
+/* títulos sobre a tinta esperam a fonte (máx. 1,6 s) e entram com a animação */
+.abertura__bloco, .agendar__titulo { transition: opacity .9s var(--curva), transform .9s var(--curva); }
+.js:not(.fontes) .abertura__bloco, .js:not(.fontes) .agendar__titulo { opacity: 0; transform: translateY(10px); }
 .tinta-video { object-fit: cover; background: var(--papel); }
 .tinta-fallback {
   position: absolute; inset: 0; z-index: -2;

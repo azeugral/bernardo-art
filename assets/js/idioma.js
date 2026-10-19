@@ -11,6 +11,14 @@
   window.EN = EN;
   window.T = function (pt, en) { return EN ? en : pt; };
 
+  /* fontes prontas (Forum): títulos e animação aparecem juntos, sem troca de fonte visível */
+  window.FONTES = new Promise(function (ok) {
+    var feito = function () { document.documentElement.classList.add("fontes"); ok(); };
+    setTimeout(feito, 1600);
+    if (document.fonts && document.fonts.load) document.fonts.load("1em Forum").then(function () { return document.fonts.ready; }).then(feito, feito);
+    else feito();
+  });
+
   var eu = document.currentScript && document.currentScript.src;
   window.RAIZ = eu ? eu.replace(/assets\/js\/idioma\.js.*$/, "") : "";
 

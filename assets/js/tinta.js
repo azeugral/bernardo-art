@@ -71,30 +71,46 @@
     "}"
   ].join("\n");
 
+  /* fontes: a animação e os títulos só aparecem quando a Forum carregou (sem troca de fonte na frente
+     do visitante e sem a área livre pular). Limite de 1,6 s para não segurar a página. */
+  var fontes = window.FONTES || new Promise(function (ok) {
+    var feito = function () { document.documentElement.classList.add("fontes"); ok(); };
+    setTimeout(feito, 1600);
+    if (document.fonts && document.fonts.load) document.fonts.load("1em Forum").then(function () { return document.fonts.ready; }).then(feito, feito);
+    else feito();
+  });
+
   function iniciar(cv) {
     var gravar = cv.hasAttribute("data-tinta-gravar");
     var gl = cv.getContext("webgl", { antialias: false, alpha: false, preserveDrawingBuffer: gravar });
     if (!gl) { cv.classList.add("sem-gl"); return; }
     gl.getExtension("OES_standard_derivatives");
-
-    function sh(tipo, src) {
-      var o = gl.createShader(tipo);
-      gl.shaderSource(o, src);
-      gl.compileShader(o);
-      if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(o);
-      return o;
-    }
+    /* compila em segundo plano quando o navegador permite: a página não trava */
+    var paralelo = gl.getExtension("KHR_parallel_shader_compile");
 
     var prog = gl.createProgram();
-    try {
-      gl.attachShader(prog, sh(gl.VERTEX_SHADER, VERT));
-      gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, "#extension GL_OES_standard_derivatives : enable\n" + FRAG));
-      gl.linkProgram(prog);
-      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw gl.getProgramInfoLog(prog);
-    } catch (err) {
-      cv.classList.add("sem-gl");
-      return;
+    var vs = gl.createShader(gl.VERTEX_SHADER), fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(vs, VERT);
+    gl.shaderSource(fs, "#extension GL_OES_standard_derivatives : enable\n" + FRAG);
+    gl.compileShader(vs); gl.compileShader(fs);
+    gl.attachShader(prog, vs); gl.attachShader(prog, fs);
+    gl.linkProgram(prog);
+
+    function quandoCompilar(feito) {
+      if (!paralelo || gravar) { feito(); return; }
+      (function espera() {
+        if (gl.getProgramParameter(prog, paralelo.COMPLETION_STATUS_KHR)) feito();
+        else requestAnimationFrame(espera);
+      })();
     }
+
+    quandoCompilar(function () {
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { cv.classList.add("sem-gl"); return; }
+      if (gravar) { montar(); return; }
+      fontes.then(montar);
+    });
+
+    function montar() {
     gl.useProgram(prog);
 
     var buf = gl.createBuffer();
@@ -114,38 +130,51 @@
 
     var area = cv.closest("[data-tinta-area]") || cv.parentNode;
     var livres = Array.prototype.slice.call(area.querySelectorAll("[data-tinta-livre]"), 0, MAX_ZONAS);
-    var zonas = new Float32Array(MAX_ZONAS * 4), zf = 1;
+    /* zonas: o shader recebe "zonas"; mudanças de layout mexem em "alvo" e as zonas deslizam até lá */
+    var zonas = new Float32Array(MAX_ZONAS * 4), alvo = new Float32Array(MAX_ZONAS * 4), zf = 1, primeira = true;
 
-    var w = 0, hgt = 0, visivel = true, rodando = false, ultimo = 0, tempo = 12;
+    var w = 0, hgt = 0, visivel = true, rodando = false, ultimo = 0, tempo = 12, inicio = 0;
 
-    /* resolução: telas de toque começam em 1x; se o aparelho não sustentar ~45 fps, baixa sozinho */
+    /* resolução: telas de toque começam em 1x; se o aparelho não sustentar ~45 fps, baixa sozinho
+       (só mede depois que a página assentou, para não confundir a carga inicial com aparelho lento) */
     var toque = window.matchMedia("(pointer: coarse)").matches;
     var escala = toque ? 1 : 1.5, amostras = [], ajustes = 0;
 
     function medir() {
       var dpr = Math.min(window.devicePixelRatio || 1, escala);
       var r = cv.getBoundingClientRect();
-      w = Math.max(1, Math.round(r.width * dpr));
-      hgt = Math.max(1, Math.round(r.height * dpr));
+      var nw = Math.max(1, Math.round(r.width * dpr)), nh = Math.max(1, Math.round(r.height * dpr));
+      var k0 = w ? nw / w : 1;
+      w = nw; hgt = nh;
       if (cv.width !== w || cv.height !== hgt) {
         cv.width = w; cv.height = hgt;
         gl.viewport(0, 0, w, hgt);
+        /* mudou a resolução: as zonas atuais acompanham a escala, sem salto */
+        if (k0 !== 1) for (var j = 0; j < zonas.length; j++) zonas[j] *= k0;
       }
       var k = w / r.width;
-      zonas.fill(0);
+      alvo.fill(0);
       livres.forEach(function (el, i) {
         var lr = el.getBoundingClientRect();
         if (!lr.width) return;
         /* data-tinta-livre-min: largura de tela a partir da qual a área livre vale */
         if (el.dataset.tintaLivreMin && window.innerWidth < +el.dataset.tintaLivreMin) return;
         var folga = parseFloat(el.dataset.tintaFolga || "-4");
-        zonas[i * 4] = (lr.left - r.left + lr.width / 2) * k;
-        zonas[i * 4 + 1] = (r.bottom - lr.bottom + lr.height / 2) * k;
-        zonas[i * 4 + 2] = (lr.width / 2 + folga) * k;
-        zonas[i * 4 + 3] = (lr.height / 2 + folga) * k;
+        alvo[i * 4] = (lr.left - r.left + lr.width / 2) * k;
+        alvo[i * 4 + 1] = (r.bottom - lr.bottom + lr.height / 2) * k;
+        alvo[i * 4 + 2] = (lr.width / 2 + folga) * k;
+        alvo[i * 4 + 3] = (lr.height / 2 + folga) * k;
       });
       zf = Math.min(w, hgt) * 0.07;
+      if (primeira || !rodando) { zonas.set(alvo); primeira = false; }
       desenhar();
+    }
+
+    function aproximar() {
+      for (var j = 0; j < zonas.length; j++) {
+        var d = alvo[j] - zonas[j];
+        zonas[j] = Math.abs(d) < 0.5 ? alvo[j] : zonas[j] + d * 0.12;
+      }
     }
 
     function desenhar() {
@@ -161,15 +190,17 @@
       var bruto = ultimo ? agora - ultimo : 16.7;
       var dt = Math.min(0.05, bruto / 1000);
       ultimo = agora;
-      if (ajustes < 3) {
+      if (!inicio) inicio = agora;
+      if (ajustes < 3 && agora - inicio > 2500) {
         amostras.push(bruto);
-        if (amostras.length === 40) {
+        if (amostras.length === 60) {
           amostras.sort(function (a, b) { return a - b; });
-          if (amostras[20] > 22 && escala > 0.5) { escala = Math.max(0.5, escala * 0.75); ajustes++; medir(); }
+          if (amostras[30] > 22 && escala > 0.5) { escala = Math.max(0.5, escala * 0.75); ajustes++; medir(); }
           amostras = [];
         }
       }
       tempo += dt;
+      aproximar();
       desenhar();
       requestAnimationFrame(quadro);
     }
@@ -194,13 +225,14 @@
     if (window.ResizeObserver) new ResizeObserver(remedir).observe(area);
 
     medir();
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(medir);
-    cv.classList.add("pronto");
     if (gravar) {
+      cv.classList.add("pronto");
       window.__tintaQuadro = function (seg) { tempo = seg; desenhar(); gl.finish(); return true; };
       return;
     }
-    ligar();
+    /* o primeiro quadro já está desenhado: só então começa o fade */
+    requestAnimationFrame(function () { cv.classList.add("pronto"); ligar(); });
+    }
   }
 
   var celular = window.matchMedia("(pointer: coarse)").matches &&
