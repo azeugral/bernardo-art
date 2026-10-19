@@ -215,10 +215,11 @@
     v.preload = "auto";
     /* cada seção tem o seu vídeo, gravado com a área do texto já livre */
     var nome = cv.closest(".final, .simples") ? "tinta-final" : cv.closest(".agendar__lado") ? "tinta-agendar" : "tinta";
-    v.poster = "assets/video/" + nome + ".jpg";
+    var raiz = window.RAIZ || "";
+    v.poster = raiz + "assets/video/" + nome + ".jpg";
     v.className = "tinta-video tinta-video--" + nome;
     var src = document.createElement("source");
-    src.src = "assets/video/" + nome + ".mp4?v=60"; src.type = "video/mp4";
+    src.src = raiz + "assets/video/" + nome + ".mp4?v=60"; src.type = "video/mp4";
     v.appendChild(src);
     cv.parentNode.replaceChild(v, cv);
     v.addEventListener("loadeddata", function () { v.classList.add("pronto"); });

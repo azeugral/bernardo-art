@@ -13,7 +13,16 @@ HTML, CSS e JS puros. Feito por [L R G Z](https://lrgz.com.br).
 | Destino do formulário | `assets/js/agendar.js`, objeto `ENVIO` |
 | Textos | `index.html`, `trabalhos.html` e `agendar.html` |
 | Vídeos do celular | `assets/video/` (ver abaixo) |
+| Versão em inglês | `en/` é **gerada**: editar as páginas em português e a tradução em `tools/traduzir.py`, depois rodar `python tools/traduzir.py` |
+| Textos gerados por script | `assets/js/idioma.js` (meses e cidades da agenda) e as chamadas `T("pt", "en")` em `site.js` e `agendar.js` |
 | Cache | subir o `?v=` nos `<link>`/`<script>` dos HTML depois de mudar CSS/JS |
+
+## Inglês
+
+- Páginas: `en/` (início), `en/book.html`, `en/work.html`, `en/thanks.html`. Seletor PT/EN no topo e `hreflang` em todas.
+- Quem abre a versão em português com o navegador em outro idioma vê um aviso discreto com link para o inglês (não redireciona; dispensável).
+- O pedido em inglês manda o **mesmo e-mail** para o Bernardo (campos em português), com `Idioma: English` e o assunto "Agendamento (EN)".
+- Nunca editar `en/*.html` à mão: o `tools/traduzir.py` sobrescreve. Se um trecho em português mudar e a tradução não, o script para e avisa.
 
 ## Animação de fundo
 
@@ -48,6 +57,7 @@ vai direto para o e-mail do cliente.
 - [ ] Limite de 3 imagens no envio (o Forms não tinha limite declarado).
 - [ ] Idade mínima: atende menores com autorização? (hoje o campo só pede a idade).
 - [ ] Locais do corpo sugeridos no formulário (lista em `agendar.html`).
-- [ ] Versão em inglês para os pedidos da Europa 2027.
+- [ ] Inglês: revisar a tradução com o Bernardo (tom e termos de tatuagem).
+- [ ] Inglês: o sinal aparece como R$ 500 (reais). Para clientes da Europa 2027 o valor/moeda e as formas de pagamento (PIX, dinheiro, cartão) são as mesmas?
 - [ ] Domínio. Hoje está em GitHub Pages com `noindex`; trocar `robots.txt`, a meta robots,
       o `<base>` do `404.html` e o `og:image` quando houver domínio.

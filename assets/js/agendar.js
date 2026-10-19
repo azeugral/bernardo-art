@@ -10,7 +10,12 @@
     ladoMax: 1600,
     qualidade: 0.82
   };
-  var CHAVE = "bernardo-pedido-v1";
+  var CHAVE = "bernardo-pedido-v1" + (document.documentElement.lang.indexOf("en") === 0 ? "-en" : "");
+
+  var T = window.T || function (pt) { return pt; };
+  var EN = !!window.EN;
+  var mes = window.mesNoIdioma || function (m) { return m; };
+  var localT = window.localNoIdioma || function (l) { return l; };
 
   var form = document.querySelector("[data-pedido]");
   if (!form) return;
@@ -37,10 +42,10 @@
   (window.AGENDA || []).filter(function (a) { return a.aberta; }).forEach(function (a) {
     var v = a.mes + " " + a.ano + " · " + a.local;
     caixaQuando.insertAdjacentHTML("beforeend",
-      '<label class="escolha"><input type="radio" name="Cidade e mês" value="' + esc(v) + '" required><span><small>' + esc(a.mes) + " " + a.ano + "</small><b>" + esc(a.local) + "</b></span></label>");
+      '<label class="escolha"><input type="radio" name="Cidade e mês" value="' + esc(v) + '" required><span><small>' + esc(mes(a.mes)) + " " + a.ano + "</small><b>" + esc(localT(a.local)) + "</b></span></label>");
   });
   caixaQuando.insertAdjacentHTML("beforeend",
-    '<label class="escolha"><input type="radio" name="Cidade e mês" value="Outra data"><span><small>Outra cidade ou mês</small><b>Outra data</b></span></label>');
+    '<label class="escolha"><input type="radio" name="Cidade e mês" value="Outra data"><span><small>' + T("Outra cidade ou mês", "Another city or month") + '</small><b>' + T("Outra data", "Other date") + '</b></span></label>');
   caixaQuando.addEventListener("change", function () {
     var outro = $('input[name="Cidade e mês"]:checked').value === "Outra data";
     outroQuando.hidden = !outro;
@@ -50,8 +55,10 @@
   /* ---------- texto de ajuda muda com o tipo de projeto ---------- */
   var ajudaIdeia = $("[data-ajuda-ideia]");
   var ajudas = {
-    "Tem um significado": "Seja o mais detalhista possível e, caso se sinta à vontade, conte um pouco da sua história: o motivo e o significado dessa tatuagem para você.",
-    "Sem significado, tema definido": "Descreva um tema bem definido, por exemplo: abstrato livre, um rosto feminino, um animal."
+    "Tem um significado": T("Seja o mais detalhista possível e, caso se sinta à vontade, conte um pouco da sua história: o motivo e o significado dessa tatuagem para você.",
+      "Be as detailed as possible and, if you feel comfortable, tell me a little about your story: the reason and the meaning of this tattoo for you."),
+    "Sem significado, tema definido": T("Descreva um tema bem definido, por exemplo: abstrato livre, um rosto feminino, um animal.",
+      "Describe a well-defined theme, for example: free abstract, a female face, an animal.")
   };
   $$('input[name="x-tipo"]').forEach(function (r) {
     r.addEventListener("change", function () { ajudaIdeia.textContent = ajudas[r.value]; });
@@ -59,7 +66,7 @@
 
   /* ---------- contador ---------- */
   var ideia = $("#ideia"), contador = $("[data-contador]");
-  function contar() { var n = ideia.value.trim().length; contador.textContent = n + (n === 1 ? " caractere" : " caracteres"); }
+  function contar() { var n = ideia.value.trim().length; contador.textContent = n + (n === 1 ? T(" caractere", " character") : T(" caracteres", " characters")); }
   ideia.addEventListener("input", contar);
 
   /* ---------- régua ---------- */
@@ -70,18 +77,20 @@
     for (var cm = 0; cm <= MAXR; cm += 5) {
       var palmo = cm % 25 === 0;
       h += '<i class="' + (palmo ? "palmo" : "") + '" style="left:' + (cm / MAXR * 100) + '%"></i>';
-      if (palmo && cm > 0) h += '<b style="left:' + (cm / MAXR * 100) + '%' + (cm === MAXR ? ';transform:translateX(-100%)' : '') + '">' + (cm / 25) + (cm === 25 ? " palmo" : " palmos") + "</b>";
+      if (palmo && cm > 0) h += '<b style="left:' + (cm / MAXR * 100) + '%' + (cm === MAXR ? ';transform:translateX(-100%)' : '') + '">' + (cm / 25) + (cm === 25 ? T(" palmo", " hand span") : T(" palmos", " hand spans")) + "</b>";
     }
     trilho.insertAdjacentHTML("beforeend", h);
   })();
   function regua() {
     var v = parseFloat(tamanho.value);
-    if (!v || v <= 0) { marca.style.width = "0"; leitura.textContent = "Digite um tamanho"; return; }
+    if (!v || v <= 0) { marca.style.width = "0"; leitura.textContent = T("Digite um tamanho", "Enter a size"); return; }
     marca.style.width = Math.min(100, v / MAXR * 100) + "%";
     var palmos = v / 22.5;
-    var txt = v + " cm ≈ " + (palmos < 0.5 ? "menos de meio palmo" : (Math.round(palmos * 2) / 2).toString().replace(".", ",") + (palmos >= 1.25 ? " palmos" : " palmo"));
-    if (v <= 40) txt += " · projeto pequeno: podemos tatuar no mesmo dia";
-    else txt += " · projeto maior: podemos tatuar no dia seguinte";
+    var meio = (Math.round(palmos * 2) / 2).toString();
+    var txt = v + " cm ≈ " + (palmos < 0.5 ? T("menos de meio palmo", "less than half a hand span") :
+      (EN ? meio : meio.replace(".", ",")) + (palmos >= 1.25 ? T(" palmos", " hand spans") : T(" palmo", " hand span")));
+    if (v <= 40) txt += T(" · projeto pequeno: podemos tatuar no mesmo dia", " · small project: we can tattoo on the same day");
+    else txt += T(" · projeto maior: podemos tatuar no dia seguinte", " · larger project: we can tattoo on the following day");
     leitura.textContent = txt;
   }
   tamanho.addEventListener("input", regua);
@@ -90,7 +99,7 @@
   var inputArq = $("#arquivos"), lista = $("[data-fotos-lista]"), zona = $("[data-fotos]");
   function desenharFotos() {
     lista.innerHTML = fotos.map(function (f, i) {
-      return '<figure class="foto"><img src="' + f.url + '" alt=""><figcaption>' + (i + 1) + '</figcaption><button type="button" data-tirar="' + i + '" aria-label="Remover imagem ' + (i + 1) + '">×</button></figure>';
+      return '<figure class="foto"><img src="' + f.url + '" alt=""><figcaption>' + (i + 1) + '</figcaption><button type="button" data-tirar="' + i + '" aria-label="' + T("Remover imagem ", "Remove image ") + (i + 1) + '">×</button></figure>';
     }).join("");
   }
   function addArquivos(arqs) {
@@ -101,7 +110,8 @@
       fotos.push({ file: f, url: URL.createObjectURL(f) });
     });
     desenharFotos();
-    if (aviso) mostrarAlerta("Dá para mandar até " + ENVIO.maxFotos + " imagens. Se precisar de mais, eu peço depois.");
+    if (aviso) mostrarAlerta(T("Dá para mandar até " + ENVIO.maxFotos + " imagens. Se precisar de mais, eu peço depois.",
+      "You can send up to " + ENVIO.maxFotos + " images. If I need more, I'll ask later."));
   }
   inputArq.addEventListener("change", function () { addArquivos(inputArq.files); inputArq.value = ""; });
   lista.addEventListener("click", function (e) {
@@ -180,7 +190,7 @@
     $$('.confirma input[required]', et).forEach(function (c) { if (!marcar(c, c.checked)) falha(c); });
 
     if (!ok) {
-      mostrarAlerta("Faltou preencher alguns campos desta etapa.");
+      mostrarAlerta(T("Faltou preencher alguns campos desta etapa.", "Some fields in this step are missing."));
       if (primeiro) {
         var alvo = primeiro.closest(".campo, .confirma, [data-grupo]") || primeiro;
         alvo.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
@@ -291,6 +301,23 @@
     $('[data-composto="tipo"]').value = tipo ? tipo.value : "";
   }
 
+  function rotulo(input) {
+    var l = input && input.closest("label");
+    if (!l) return input ? input.value : "";
+    var b = l.querySelector("b"), sp = l.querySelector("span");
+    return (b || sp || l).textContent.trim();
+  }
+  function rotulosMarcados(grupo) {
+    return $$('[data-grupo="' + grupo + '"] input[type="checkbox"]:checked').map(function (c) { return EN ? rotulo(c) : c.value; });
+  }
+  function quandoVisivel() {
+    var q = $('input[name="Cidade e mês"]:checked');
+    if (!q) return "";
+    if (q.value === "Outra data") return T("Outra data: ", "Other date: ") + outroQuando.value.trim();
+    var l = q.closest("label");
+    return l.querySelector("small").textContent + " · " + l.querySelector("b").textContent;
+  }
+
   function valorQuando() {
     var q = $('input[name="Cidade e mês"]:checked');
     if (!q) return "";
@@ -301,21 +328,22 @@
     compor();
     var g = function (sel) { var el = $(sel); return el ? el.value.trim() : ""; };
     var obsDias = g("#dias-obs");
+    var locais = rotulosMarcados("local"), detLocal = g("#local-obs");
     var linhas = [
-      ["Nome", g("#nome"), 0],
-      ["Idade", g("#idade"), 0],
-      ["Cidade", g("#cidade"), 0],
-      ["Contato", [g("#telefone"), g("#email"), g("#insta")].filter(Boolean).join("\n"), 0],
-      ["Tipo", $('[data-composto="tipo"]').value, 1],
-      ["Ideia", g("#ideia"), 1],
-      ["Local", $('[data-composto="local"]').value, 1],
-      ["Tamanho", g("#tamanho") ? g("#tamanho") + " cm" : "", 1],
-      ["Imagens", fotos.length ? fotos.length + (fotos.length > 1 ? " imagens" : " imagem") : "Nenhuma", 1],
-      ["Quando", valorQuando(), 2],
-      ["Dias", $('[data-composto="dias"]').value + (obsDias ? "\n" + obsDias : ""), 2]
+      [T("Nome", "Name"), g("#nome"), 0],
+      [T("Idade", "Age"), g("#idade"), 0],
+      [T("Cidade", "City"), g("#cidade"), 0],
+      [T("Contato", "Contact"), [g("#telefone"), g("#email"), g("#insta")].filter(Boolean).join("\n"), 0],
+      [T("Tipo", "Type"), rotulo($('input[name="x-tipo"]:checked')), 1],
+      [T("Ideia", "Idea"), g("#ideia"), 1],
+      [T("Local", "Placement"), locais.join(", ") + (detLocal ? (locais.length ? " · " : "") + detLocal : ""), 1],
+      [T("Tamanho", "Size"), g("#tamanho") ? g("#tamanho") + " cm" : "", 1],
+      [T("Imagens", "Images"), fotos.length ? fotos.length + (fotos.length > 1 ? T(" imagens", " images") : T(" imagem", " image")) : T("Nenhuma", "None"), 1],
+      [T("Quando", "When"), quandoVisivel(), 2],
+      [T("Dias", "Days"), rotulosMarcados("dias").join(", ") + (obsDias ? "\n" + obsDias : ""), 2]
     ];
     $("[data-revisao]").innerHTML = linhas.map(function (l) {
-      return '<div class="revisao__grupo"><dt>' + l[0] + "</dt><dd>" + esc(l[1] || "—") + '</dd><button type="button" data-editar="' + l[2] + '">Editar</button></div>';
+      return '<div class="revisao__grupo"><dt>' + l[0] + "</dt><dd>" + esc(l[1] || "—") + '</dd><button type="button" data-editar="' + l[2] + '">' + T("Editar", "Edit") + '</button></div>';
     }).join("");
   }
   $("[data-revisao]").addEventListener("click", function (e) {
@@ -348,7 +376,7 @@
   function salvar() {
     try {
       localStorage.setItem(CHAVE, JSON.stringify({ d: lerTudo(), e: maxVisto, t: Date.now() }));
-      rascunho.textContent = "Rascunho salvo neste navegador";
+      rascunho.textContent = T("Rascunho salvo neste navegador", "Draft saved in this browser");
     } catch (err) { /* sem armazenamento: segue sem rascunho */ }
   }
   form.addEventListener("input", function () { clearTimeout(tSalvar); tSalvar = setTimeout(salvar, 600); });
@@ -363,7 +391,7 @@
         aplicar(r.d);
         maxVisto = r.e || 0;
         restaurado = true;
-        rascunho.textContent = "Continuando de onde você parou";
+        rascunho.textContent = T("Continuando de onde você parou", "Picking up where you left off");
       }
     }
   } catch (err) { /* ignora */ }
@@ -393,12 +421,12 @@
 
     enviando = true;
     btnEnviar.disabled = true;
-    btnEnviar.firstChild.textContent = "Enviando… ";
+    btnEnviar.firstChild.textContent = T("Enviando… ", "Sending… ");
     compor();
 
     var nome = $("#nome").value.trim().split(/\s+/)[0];
-    form.elements._subject.value = "Agendamento · " + $("#nome").value.trim() + " · " + valorQuando();
-    form.elements._next.value = new URL("obrigado.html", location.href).href;
+    form.elements._subject.value = (EN ? "Agendamento (EN) · " : "Agendamento · ") + $("#nome").value.trim() + " · " + valorQuando();
+    form.elements._next.value = new URL(form.dataset.obrigado || "obrigado.html", location.href).href;
 
     Promise.all(fotos.map(function (f) { return comprimir(f.file); })).then(function (arqs) {
       var caixa = $("[data-anexos]");
@@ -416,7 +444,8 @@
         } catch (err) { suportaDT = false; caixa.removeChild(inp); }
       });
       if (!suportaDT && arqs.length) {
-        $("#duvidas").value += "\n\n(As imagens não puderam ser anexadas por este navegador; vou mandar pelo Instagram ou e-mail.)";
+        $("#duvidas").value += T("\n\n(As imagens não puderam ser anexadas por este navegador; vou mandar pelo Instagram ou e-mail.)",
+          "\n\n(The images could not be attached by this browser; I will send them by Instagram or email.)");
       }
       /* campos auxiliares não vão no e-mail */
       $$('input[name="x-tipo"], [data-grupo="local"] input[type="checkbox"], [data-grupo="dias"] input[type="checkbox"], #arquivos').forEach(function (el) { el.disabled = true; });

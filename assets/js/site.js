@@ -1,6 +1,11 @@
 (function () {
   "use strict";
 
+  var T = window.T || function (pt) { return pt; };
+  var RAIZ = window.RAIZ || "";
+  var mes = window.mesNoIdioma || function (m) { return m; };
+  var local = window.localNoIdioma || function (l) { return l; };
+
   /* topo: fica sólido depois da abertura */
   var topo = document.querySelector("[data-topo]");
   if (topo && !topo.classList.contains("topo--fixo")) {
@@ -19,7 +24,7 @@
       var abre = !topo.classList.contains("aberto");
       topo.classList.toggle("aberto", abre);
       btn.setAttribute("aria-expanded", String(abre));
-      btn.textContent = abre ? "Fechar" : "Menu";
+      btn.textContent = abre ? T("Fechar", "Close") : "Menu";
     });
     topo.querySelectorAll(".menu a").forEach(function (a) { a.addEventListener("click", fechar); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") fechar(); });
@@ -38,17 +43,17 @@
       var abertas = lista.filter(function (a) { return a.aberta; });
       var fechadas = lista.filter(function (a) { return !a.aberta; });
       html += '<div class="agenda-ano" data-revela><div class="agenda-ano__titulo"><b>' + ano + '</b><span class="rotulo">' +
-        (abertas.length ? abertas.length + (abertas.length > 1 ? " meses abertos" : " mês aberto") : "fechada") + "</span></div>";
+        (abertas.length ? abertas.length + (abertas.length > 1 ? T(" meses abertos", " open months") : T(" mês aberto", " open month")) : T("fechada", "closed")) + "</span></div>";
       html += '<ul class="agenda-lista">';
       abertas.forEach(function (a) {
-        var q = "agendar.html?quando=" + encodeURIComponent(a.mes + " " + a.ano + " · " + a.local);
-        html += '<li><a class="agenda-linha" href="' + q + '"><span class="mes">' + esc(a.mes) + '</span><span class="local">' + esc(a.local) + '</span><span class="estado">Pedir data →</span></a></li>';
+        var q = T("agendar.html", "book.html") + "?quando=" + encodeURIComponent(a.mes + " " + a.ano + " · " + a.local);
+        html += '<li><a class="agenda-linha" href="' + q + '"><span class="mes">' + esc(mes(a.mes)) + '</span><span class="local">' + esc(local(a.local)) + '</span><span class="estado">' + T("Pedir data", "Request date") + ' →</span></a></li>';
       });
       html += "</ul>";
       if (fechadas.length) {
-        html += '<details class="agenda-fechadas"><summary>' + fechadas.length + " " + (fechadas.length > 1 ? "meses fechados" : "mês fechado") + '</summary><ul class="agenda-lista">';
+        html += '<details class="agenda-fechadas"><summary>' + fechadas.length + " " + (fechadas.length > 1 ? T("meses fechados", "closed months") : T("mês fechado", "closed month")) + '</summary><ul class="agenda-lista">';
         fechadas.forEach(function (a) {
-          html += '<li><div class="agenda-linha fechada"><span class="mes">' + esc(a.mes) + '</span><span class="local">' + esc(a.local) + '</span><span class="estado">Fechada</span></div></li>';
+          html += '<li><div class="agenda-linha fechada"><span class="mes">' + esc(mes(a.mes)) + '</span><span class="local">' + esc(local(a.local)) + '</span><span class="estado">' + T("Fechada", "Closed") + '</span></div></li>';
         });
         html += "</ul></details>";
       }
@@ -67,11 +72,11 @@
     var h = "";
     if (lista.length) {
       lista.forEach(function (o, i) {
-        h += '<figure class="obra" data-revela><button type="button" class="obra__abrir" data-abrir="' + i + '" aria-label="Ampliar foto ' + (i + 1) + '">' +
-          '<img src="' + esc(o.mini || o.src) + '" alt="Tatuagem abstrata de Bernardo Lacerda" width="640" height="800" loading="' + (i < 3 ? "eager" : "lazy") + '" decoding="async"></button></figure>';
+        h += '<figure class="obra" data-revela><button type="button" class="obra__abrir" data-abrir="' + i + '" aria-label="' + T("Ampliar foto ", "Enlarge photo ") + (i + 1) + '">' +
+          '<img src="' + esc(RAIZ + (o.mini || o.src)) + '" alt="' + T("Tatuagem abstrata de Bernardo Lacerda", "Abstract tattoo by Bernardo Lacerda") + '" width="640" height="800" loading="' + (i < 3 ? "eager" : "lazy") + '" decoding="async"></button></figure>';
       });
     } else {
-      for (var i = 1; i <= 6; i++) h += '<div class="obra obra--vaga" data-revela><span>Foto ' + (i < 10 ? "0" + i : i) + "</span></div>";
+      for (var i = 1; i <= 6; i++) h += '<div class="obra obra--vaga" data-revela><span>' + T("Foto ", "Photo ") + (i < 10 ? "0" + i : i) + "</span></div>";
     }
     obras.innerHTML = h;
 
@@ -85,11 +90,11 @@
       var mostrar = function (i) {
         atual = (i + lista.length) % lista.length;
         var o = lista[atual];
-        img.src = o.src; img.width = o.w; img.height = o.h;
-        img.alt = "Tatuagem abstrata de Bernardo Lacerda";
+        img.src = RAIZ + o.src; img.width = o.w; img.height = o.h;
+        img.alt = T("Tatuagem abstrata de Bernardo Lacerda", "Abstract tattoo by Bernardo Lacerda");
         leg.textContent = (atual + 1) + " / " + lista.length;
         var prox = lista[(atual + 1) % lista.length];
-        if (prox) { var pre = new Image(); pre.src = prox.src; }
+        if (prox) { var pre = new Image(); pre.src = RAIZ + prox.src; }
       };
       obras.addEventListener("click", function (e) {
         var b = e.target.closest("[data-abrir]");
